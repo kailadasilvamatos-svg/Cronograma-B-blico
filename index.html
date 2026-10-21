@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7edf0">
+<meta name="description" content="Rastreador pessoal de leitura e estudo bíblico.">
+<title>Meu Rastreador Bíblico — Ler, refletir e florescer</title>
+<style>
+:root{color-scheme:light;--paper:#f3e9d2;--page:#fff9ec;--ink:#45301f;--muted:#806b52;--rule:#d8c6a1;--brown:#7a4a26;--brown2:#5a3519;--olive:#667a35;--sel:#ecdcb8;--white:#fffdf7;--shadow:0 8px 24px #5a351912}
+*{box-sizing:border-box}html{min-height:100%;scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Georgia,"Palatino Linotype",serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #a8743f;outline-offset:2px}
+.skip{position:absolute;left:-9999px}.skip:focus{left:1rem;top:1rem;background:white;padding:.7rem;z-index:99}
+.site-header{background:var(--page);border-bottom:2px solid var(--brown);padding:1rem clamp(1rem,3vw,2rem);position:sticky;top:0;z-index:5;box-shadow:var(--shadow)}
+.header-inner{max-width:1500px;margin:auto}.brand-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}.brand{margin:0;color:var(--brown2);font-size:clamp(1.25rem,2.6vw,1.8rem);font-weight:normal;font-style:italic}.subbrand{margin:.1rem 0 .6rem;color:var(--muted);font-size:.9rem}
+.global-progress{display:flex;align-items:center;gap:.8rem}.track,.progress-track{height:12px;flex:1;min-width:60px;background:var(--sel);border:1px solid var(--rule);border-radius:20px;overflow:hidden}.track span,.progress-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brown),#b58a51);transition:width .25s}.progress-label{font-size:.86rem;min-width:max-content;color:var(--brown2)}
+.layout{max-width:1500px;margin:0 auto;display:grid;grid-template-columns:minmax(255px,340px) minmax(0,1fr);min-height:calc(100vh - 120px)}
+.book-nav{padding:1rem;border-right:1px solid var(--rule);max-height:calc(100vh - 120px);overflow:auto}
+.panel{padding:clamp(1rem,2.6vw,2rem);min-width:0;background:var(--page)}
+.import-card{background:var(--sel);border:1px dashed var(--brown);border-radius:12px;padding:.8rem;margin-bottom:1rem;font-size:.9rem}.import-card strong{display:block;color:var(--brown2)}.import-card p{margin:.2rem 0}.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+.section-title{font-size:1.05rem;color:var(--brown2);font-weight:normal;border-bottom:2px solid var(--brown);margin:1rem 0 .35rem;padding-bottom:.2rem}.category-title{display:flex;justify-content:space-between;gap:.5rem;margin:.8rem 0 .2rem;color:var(--muted);font-size:.88rem;font-style:italic}
+.book-item{display:flex;align-items:center;gap:.55rem;padding:.25rem .45rem;border-radius:7px;cursor:pointer;min-height:34px}.book-item:hover,.book-item.selected{background:var(--sel)}.book-item.selected{box-shadow:inset 3px 0 var(--brown)}.book-item input{accent-color:var(--olive);width:17px;height:17px;flex:none}.book-name{flex:1;min-width:0}.book-item.completed .book-name{text-decoration:line-through;text-decoration-color:var(--olive);color:var(--muted)}.book-pct{font: .72rem/1.5 system-ui,sans-serif;border:1px solid var(--rule);border-radius:99px;padding:0 .4rem;color:var(--muted);min-width:42px;text-align:center}.book-item.completed .book-pct{background:var(--olive);color:white;border-color:var(--olive)}.book-item.reading .book-pct{background:#e8c98f;color:var(--brown2)}
+.empty-state{padding:4rem 1rem;text-align:center;color:var(--muted);font-style:italic}.detail-head h2{font-weight:normal;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0;color:var(--brown2)}.detail-head p{color:var(--muted);font-style:italic;margin:.45rem 0 1.2rem}.progress-card{margin-bottom:1rem}.progress-line{display:flex;justify-content:space-between;gap:1rem;font-size:.9rem;color:var(--brown2);margin-bottom:.35rem}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:.8rem;margin-bottom:1rem}.field label{display:block;color:var(--muted);font-size:.87rem;margin-bottom:.25rem}.field select,.field input,.search-input,textarea{width:100%;background:var(--white);color:var(--ink);border:1px solid var(--rule);border-radius:8px;padding:.55rem .7rem}.timer{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;background:var(--sel);border:1px solid var(--rule);border-radius:12px;padding:.8rem 1rem;margin-bottom:1.2rem}.clock{font:2rem/1.2 ui-monospace,Consolas,monospace;color:var(--brown2);font-variant-numeric:tabular-nums}.timer-info{font-size:.82rem;color:var(--muted);flex:1;min-width:130px}
+.btn{background:var(--brown);color:#fff8ea;border:1px solid var(--brown);border-radius:8px;padding:.5rem .9rem}.btn:hover{background:var(--brown2)}.btn.secondary{background:transparent;color:var(--brown2)}.btn.secondary:hover{background:var(--sel)}.btn.green{background:var(--olive);border-color:var(--olive)}.btn.small{font-size:.85rem;padding:.25rem .55rem}
+.tabs{display:flex;gap:.25rem;flex-wrap:wrap;border-bottom:1px solid var(--rule);margin-bottom:1rem}.tab{background:transparent;color:var(--muted);border:0;border-bottom:3px solid transparent;border-radius:7px 7px 0 0;padding:.55rem .9rem}.tab:hover{background:var(--sel);color:var(--brown2)}.tab[aria-selected=true]{color:var(--brown2);border-bottom-color:var(--brown)}
+.chapter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:.4rem;margin:1rem 0}.chapter{min-height:40px;background:var(--white);color:var(--ink);border:1px solid var(--rule);border-radius:7px}.chapter:hover{background:var(--sel)}.chapter.done{background:var(--olive);border-color:var(--olive);color:white}.row{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.6rem 0}.hint{color:var(--muted);font-size:.87rem}.reader{font-size:1.08rem;line-height:1.9;max-width:75ch;margin:1rem 0}.verse{margin:0 0 .3rem;border-radius:5px;padding:.05rem .2rem}.verse sup{font:700 .68rem/1 system-ui,sans-serif;color:var(--brown);margin-right:.35rem}.verse.flash{background:#fff0a6;outline:2px solid var(--brown)}.verse-text span.highlight{border-radius:3px;color:#2b1d12}.swatch{width:30px;height:30px;padding:0;border-radius:50%;border:2px solid var(--rule)}.swatch.active{outline:2px solid var(--brown2);outline-offset:2px}.color-input{width:36px;height:32px;padding:0;border:1px solid var(--rule);border-radius:5px;background:transparent}.search-row{display:flex;gap:.5rem;align-items:center}.search-row input{flex:1;min-width:0}.result{padding:.65rem .25rem;border-bottom:1px dashed var(--rule);cursor:pointer}.result:hover{background:var(--sel)}.result strong{color:var(--brown);margin-right:.4rem}.result mark{background:#ffe066;color:inherit}.notes{min-height:280px;resize:vertical;line-height:1.7}.status-note{font-size:.85rem;color:var(--muted);min-height:1.3em}.site-footer{max-width:1500px;margin:auto;padding:1rem;color:var(--muted);font-size:.8rem;text-align:center}
+.mobile-books{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:800px){.site-header{position:static}.layout{display:flex;flex-direction:column;min-height:0}.book-nav{max-height:none;overflow:visible;border-right:0;border-bottom:1px solid var(--rule);padding:.8rem}.book-nav.collapsed .book-list-content{display:none}.mobile-books{display:flex;align-items:center;justify-content:space-between;width:100%;background:transparent;color:var(--brown2);border:0;padding:.5rem;font-size:1rem}.book-list-content{max-height:42vh;overflow:auto}.panel{padding:1rem}.progress-label{font-size:.78rem}.timer{gap:.5rem}.clock{font-size:1.7rem}.tabs{gap:0}.tab{padding:.55rem .65rem}.reader{font-size:1.04rem}.brand-row{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Tema aquarela: papel antigo, pétalas suaves e borboletas */
+:root{
+  color-scheme:light;
+  --paper:#f8edf0;
+  --page:#fffaf5;
+  --ink:#3f3045;
+  --muted:#8b7188;
+  --rule:#ead2d8;
+  --brown:#98618c;
+  --brown2:#593b5d;
+  --olive:#80ad91;
+  --sel:#f5dfe8;
+  --white:#fffdfb;
+  --shadow:0 10px 30px rgba(111,72,102,.09);
+}
+html{background:var(--paper)}
+body{
+  background:
+    radial-gradient(ellipse at 8% 5%,rgba(244,190,211,.35),transparent 28rem),
+    radial-gradient(ellipse at 92% 24%,rgba(191,178,230,.28),transparent 32rem),
+    radial-gradient(ellipse at 55% 90%,rgba(197,224,203,.22),transparent 30rem),
+    #f8edf0;
+  color:var(--ink);
+}
+.site-header{
+  background:linear-gradient(115deg,rgba(255,250,245,.96),rgba(250,236,242,.96) 52%,rgba(239,233,249,.96));
+  border-bottom:1px solid #dfbdce;
+  box-shadow:0 5px 22px rgba(111,72,102,.08);
+  overflow:hidden;
+}
+.header-inner{position:relative}
+.brand-row{position:relative;z-index:1}
+.brand{font-size:clamp(1.35rem,3vw,2.05rem);letter-spacing:.01em;color:var(--brown2)}
+.brand::after{content:"  ♡";color:#c58baa;font-style:normal}
+.subbrand{font-style:italic;color:#987c93}
+.site-header .header-inner::after{
+  content:"🦋";position:absolute;right:3%;top:-1.1rem;font-size:clamp(2.5rem,5vw,4.2rem);
+  opacity:.62;transform:rotate(13deg);pointer-events:none;filter:saturate(.72);
+}
+.global-progress{position:relative;z-index:1;margin-top:.25rem}
+.track,.progress-track{background:#f0dfe7;border-color:#e7cbd8}
+.track span,.progress-track span{background:linear-gradient(90deg,#b77ba8,#d9a9c8 55%,#9ebca2)}
+.progress-label{color:var(--brown2)}
+.layout{gap:0;position:relative}
+.book-nav{background:rgba(255,248,246,.63);border-right:1px solid rgba(220,185,204,.75)}
+.import-card,.timer{
+  background:linear-gradient(135deg,rgba(255,239,245,.96),rgba(243,235,250,.92) 58%,rgba(239,247,237,.82));
+  border:1px solid #e9cedb;border-radius:17px;box-shadow:0 5px 18px rgba(125,83,117,.06);
+}
+.import-card{position:relative;overflow:hidden;padding:1rem}
+.import-card::after{content:"🦋";position:absolute;right:.5rem;top:.1rem;font-size:1.6rem;opacity:.42;transform:rotate(-14deg);pointer-events:none}
+.section-title{color:var(--brown2);border-bottom:1px solid #d9b7cd;font-style:italic;padding-bottom:.35rem}
+.category-title{color:#94748e}
+.book-item{transition:background .18s ease,transform .18s ease;border-radius:10px}
+.book-item:hover,.book-item.selected{background:linear-gradient(90deg,#f6dfe9,#f1e8f7);}
+.book-item.selected{box-shadow:inset 3px 0 #b77ba8}
+.book-item input{accent-color:#9d6b9d}
+.book-item.completed .book-pct{background:#83b193;border-color:#83b193}
+.book-pct{border-color:#e4cbd8;color:#8b7188}
+.panel{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(255,251,246,.95),rgba(255,247,244,.94) 48%,rgba(250,244,252,.92));
+  border:1px solid rgba(231,205,218,.8);border-top:0;border-bottom:0;
+}
+.panel::after{
+  content:"🦋";position:absolute;right:1.25rem;top:1.15rem;font-size:2rem;opacity:.23;
+  transform:rotate(16deg);pointer-events:none;
+}
+.detail-head,.progress-card,.form-grid,.timer,.tabs,#tabContent{position:relative;z-index:1}
+.detail-head h2{color:var(--brown2);font-size:clamp(1.9rem,4vw,2.7rem)}
+.detail-head p{color:#967b8d}
+.progress-card{padding:.9rem 1rem;border:1px solid #ecd7e0;border-radius:14px;background:rgba(255,255,255,.52)}
+.progress-line{color:var(--brown2)}
+.form-grid{padding:.15rem 0}
+.field label{color:#8b7188}
+.field select,.field input,.search-input,textarea{background:rgba(255,253,251,.9);border-color:#e5cbd8;border-radius:11px}
+.field select:focus,.field input:focus,.search-input:focus,textarea:focus{border-color:#b77ba8;outline-color:#d6afd0}
+.timer{border-radius:16px}
+.clock{color:var(--brown2)}
+.btn{background:#98618c;border-color:#98618c;border-radius:11px;box-shadow:0 3px 8px rgba(122,76,116,.08)}
+.btn:hover{background:#754e78;border-color:#754e78}
+.btn.secondary{background:rgba(255,255,255,.45);color:var(--brown2);border-color:#d8b8ce;box-shadow:none}
+.btn.secondary:hover{background:#f7e5ee}
+.btn.green{background:#7eaa8d;border-color:#7eaa8d}
+.tabs{border-bottom-color:#e5cbd8}
+.tab{color:#8b7188;border-radius:10px 10px 0 0}
+.tab:hover{background:#f8e8ef;color:var(--brown2)}
+.tab[aria-selected=true]{color:var(--brown2);border-bottom-color:#b77ba8}
+.chapter-grid{grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:.5rem}
+.chapter{background:rgba(255,253,251,.92);border-color:#e6cfda;border-radius:11px;transition:transform .15s ease,background .15s ease}
+.chapter:hover{background:#f8e4ee;transform:translateY(-1px)}
+.chapter.done{background:#83b193;border-color:#83b193}
+.reader{color:#403546}
+.verse sup{color:#a66f9b}
+.verse.flash{background:#f8e8ac;outline-color:#b77ba8}
+.swatch{border-color:#e2c9d8}
+.swatch.active{outline-color:#7c527d}
+.result:hover{background:#f9eaf0}
+.result strong{color:#8e5b87}
+.result mark{background:#f9e39a;border-radius:3px}
+.notes{background:rgba(255,253,251,.9)}
+.site-footer{position:relative;padding:1.3rem 3rem;color:#927a8e}
+.site-footer::before{content:"🌷  🦋  ✿";display:block;font-size:1.35rem;letter-spacing:.55rem;margin-bottom:.3rem;opacity:.8}
+.empty-state{padding:5rem 1rem;color:#9b8295}
+.empty-state::before{content:"🦋";display:block;font-size:3rem;margin-bottom:.7rem;opacity:.65}
+button,input,select,textarea{touch-action:manipulation}
+@media(max-width:800px){
+  .site-header{padding:1rem}
+  .site-header .header-inner::after{right:.1rem;top:2.6rem;font-size:2.2rem;opacity:.35}
+  .brand-row{padding-right:1.2rem}
+  .brand{max-width:17ch}
+  .global-progress{align-items:flex-start;flex-direction:column;gap:.35rem}
+  .track{width:100%;flex:auto}
+  .progress-label{min-width:0}
+  .book-nav{background:rgba(255,248,246,.8)}
+  .mobile-books{border-radius:12px;background:linear-gradient(90deg,#f7e3eb,#f1eafa);color:var(--brown2)}
+  .book-list-content{max-height:46vh}
+  .panel{border:0;border-radius:18px;margin:.65rem;padding:1rem;overflow:hidden}
+  .panel::after{right:.65rem;top:.65rem;font-size:1.5rem}
+  .detail-head h2{padding-right:1.5rem}
+  .progress-card{padding:.8rem}
+  .timer{padding:.75rem}
+  .timer .btn{min-height:42px}
+  .tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:1px}
+  .tab{white-space:nowrap;flex:0 0 auto}
+  .reader{font-size:1.02rem;line-height:1.85;overflow-wrap:anywhere}
+  .chapter-grid{grid-template-columns:repeat(auto-fill,minmax(42px,1fr))}
+  .site-footer{padding:1.2rem 1rem 1.5rem}
+}
+@media(prefers-reduced-motion:reduce){.book-item,.chapter{transition:none}}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand-row">
+      <div><h1 class="brand">Rastreador de Estudos e Leitura Bíblica</h1><p class="subbrand">Um capítulo de cada vez. Sem pressa, com propósito.</p></div>
+      <div class="actions" aria-label="Backup dos dados">
+        <button class="btn secondary small" id="exportBtn" type="button">Exportar backup</button>
+        <button class="btn secondary small" id="backupImportBtn" type="button">Importar backup</button>
+      </div>
+    </div>
+    <div class="global-progress" aria-label="Progresso geral da leitura">
+      <div class="track" role="progressbar" aria-label="Capítulos lidos na Bíblia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="globalTrack"><span id="globalBar"></span></div>
+      <div class="progress-label" id="globalLabel">0% lido · 0 de 66 livros</div>
+    </div>
+  </div>
+</header>
+<main class="layout" id="conteudo">
+  <nav class="book-nav" id="bookNav" aria-label="Navegação pelos livros bíblicos">
+    <button type="button" class="mobile-books" id="toggleBooks" aria-expanded="true" aria-controls="bookListContent">Livros da Bíblia <span aria-hidden="true">⌄</span></button>
+    <div class="book-list-content" id="bookListContent">
+      <section class="import-card" aria-labelledby="importTitle">
+        <strong id="importTitle">Texto bíblico</strong>
+        <p id="importStatus">Nenhum texto importado. O rastreador funciona sem ele, mas a leitura e a pesquisa precisam do JSON.</p>
+        <div class="actions"><button class="btn secondary small" type="button" id="bibleImportBtn">Importar Bíblia (.json)</button><button class="btn secondary small" type="button" id="clearBibleBtn" hidden>Remover texto</button></div>
+        <p class="hint" id="importHelp">O arquivo deve conter os 66 livros, capítulos e versículos. Formatos comuns são reconhecidos automaticamente.</p>
+      </section>
+      <div id="bookList"></div>
+    </div>
+  </nav>
+  <section class="panel" id="detail" aria-live="polite">
+    <div class="empty-state">Escolha um livro na lista para começar seu estudo.</div>
+  </section>
+</main>
+<footer class="site-footer">Seus dados ficam neste navegador. Exporte um backup para guardar ou transferir seu progresso.</footer>
+<input type="file" id="bibleFile" accept=".json,application/json" hidden>
+<input type="file" id="backupFile" accept=".json,application/json" hidden>
+<script>
+"use strict";
+(() => {
+const STORAGE_KEY = "rastreador-biblico-v2";
+const DB_NAME = "rastreador-biblico-v2";
+const booksData = [
+["Antigo Testamento",[
+["Pentateuco",["Gênesis|50","Êxodo|40","Levítico|27","Números|36","Deuteronômio|34"]],
+["Livros Históricos",["Josué|24","Juízes|21","Rute|4","1 Samuel|31","2 Samuel|24","1 Reis|22","2 Reis|25","1 Crônicas|29","2 Crônicas|36","Esdras|10","Neemias|13","Ester|10"]],
+["Livros Poéticos / Sabedoria",["Jó|42","Salmos|150","Provérbios|31","Eclesiastes|12","Cânticos|8"]],
+["Profetas Maiores",["Isaías|66","Jeremias|52","Lamentações|5","Ezequiel|48","Daniel|12"]],
+["Profetas Menores",["Oséias|14","Joel|3","Amós|9","Obadias|1","Jonas|4","Miqueias|7","Naum|3","Habacuque|3","Sofonias|3","Ageu|2","Zacarias|14","Malaquias|4"]]]],
+["Novo Testamento",[
+["Evangelhos",["Mateus|28","Marcos|16","Lucas|24","João|21"]],
+["Histórico",["Atos|28"]],
+["Cartas Paulinas",["Romanos|16","1 Coríntios|16","2 Coríntios|13","Gálatas|6","Efésios|6","Filipenses|4","Colossenses|4","1 Tessalonicenses|5","2 Tessalonicenses|3","1 Timóteo|6","2 Timóteo|4","Tito|3","Filemon|1"]],
+["Cartas Gerais",["Hebreus|13","Tiago|5","1 Pedro|5","2 Pedro|3","1 João|5","2 João|1","3 João|1","Judas|1"]],
+["Profecia / Apocalíptico",["Apocalipse|22"]]]]
+];
+const INFO = new Map(), ALL = [], TOTAL_CHAPTERS = 1189;
+const CATEGORIES = [];
+for (const [testament, groups] of booksData) {
+  const cats = groups.map(([category, rawBooks]) => {
+    const names = rawBooks.map(item => {
+      const [name, chapters] = item.split("|");
+      const info = {name, chapters:+chapters, testament, category};
+      INFO.set(name, info); ALL.push(name); return name;
+    });
+    return {name:category, books:names};
+  });
+  CATEGORIES.push({name:testament,categories:cats});
+}
+const state = {books:{}, selected:null, color:"#ffe066", tool:"color", running:null, bible:null, bibleName:""};
+let activeTab = "chapters", searchQuery = "", timerInterval = null;
+const $ = id => document.getElementById(id);
+const norm = s => String(s ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"");
+const today = () => {const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;};
+const escapeText = s => String(s ?? "");
+function bookState(name) {
+  if (!state.books[name]) state.books[name] = {status:"not-started",start:"",end:"",seconds:0,read:{},highlights:{},currentChapter:1,notes:""};
+  const b=state.books[name];
+  b.read ||= {}; b.highlights ||= {}; b.currentChapter ||= 1; b.seconds=Number(b.seconds)||0;
+  return b;
+}
+function countRead(name){return Object.keys(bookState(name).read).filter(k=>+k>=1&&+k<=INFO.get(name).chapters).length;}
+function percent(name){return Math.round(countRead(name)/INFO.get(name).chapters*100);}
+function formatTime(seconds){seconds=Math.max(0,Math.floor(seconds));const p=n=>String(n).padStart(2,"0");return `${p(Math.floor(seconds/3600))}:${p(Math.floor(seconds%3600/60))}:${p(seconds%60)}`;}
+function elapsed(name){const b=bookState(name);return b.seconds+(state.running?.name===name?(Date.now()-state.running.last)/1000:0);}
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({books:state.books,selected:state.selected,color:state.color}));}catch(e){setNotice("Não foi possível salvar neste navegador. Exporte um backup e verifique o espaço disponível.");}}
+function setNotice(message){const el=$("saveNotice");if(el)el.textContent=message;}
+function syncStatus(name){
+  const b=bookState(name), read=countRead(name), total=INFO.get(name).chapters;
+  if(read>=total){b.status="done";if(!b.end)b.end=today();if(!b.start)b.start=today();if(state.running?.name===name)pauseTimer();}
+  else if(read>0){if(b.status==="done")b.end="";b.status="reading";if(!b.start)b.start=today();if(!read)b.end="";}
+  else {if(b.status==="done"||b.status==="reading")b.end="";b.status=(b.seconds>0||b.start)?"reading":"not-started";if(b.status==="not-started")b.start="";}
+}
+function setStatus(name,status){
+  const b=bookState(name);
+  if(status==="not-started"&&countRead(name)>0&&!confirm("Voltar para Não iniciado vai desmarcar todos os capítulos deste livro. Continuar?")){renderDetail();return;}
+  if(state.running?.name===name&&status!=="reading")pauseTimer();
+  if(status==="done"){for(let i=1;i<=INFO.get(name).chapters;i++)b.read[i] ||= today();b.status="done";b.start ||= today();b.end ||= today();}
+  else if(status==="not-started"){b.read={};b.status="not-started";b.start="";b.end="";b.seconds=0;}
+  else {b.status="reading";b.start ||= today();b.end="";}
+  save();renderAll();
+}
+function toggleChapter(name,chapter){
+  const b=bookState(name);
+  if(b.read[chapter]) delete b.read[chapter]; else b.read[chapter]=today();
+  syncStatus(name);save();renderAll(false);
+}
+function markAll(name){const b=bookState(name);for(let i=1;i<=INFO.get(name).chapters;i++)b.read[i] ||= today();syncStatus(name);save();renderAll(false);}
+function clearChapters(name){if(!confirm(`Desmarcar todos os capítulos de ${name}?`))return;const b=bookState(name);b.read={};syncStatus(name);save();renderAll(false);}
+function pauseTimer(){if(!state.running)return;const b=bookState(state.running.name);b.seconds+=Math.max(0,(Date.now()-state.running.last)/1000);state.running=null;save();renderGlobal();}
+function startTimer(name){if(state.running?.name===name){pauseTimer();return;}if(state.running)pauseTimer();const b=bookState(name);if(b.status==="not-started"){b.status="reading";b.start ||= today();}state.running={name,last:Date.now()};save();renderGlobal();}
+function renderGlobal(){
+  const read=ALL.reduce((sum,n)=>sum+countRead(n),0), done=ALL.filter(n=>bookState(n).status==="done").length;
+  const pct=Math.round(read/TOTAL_CHAPTERS*1000)/10;
+  $("globalBar").style.width=`${pct}%`; $("globalTrack").setAttribute("aria-valuenow",String(pct));
+  $("globalLabel").textContent=`${pct}% lido · ${done} de ${ALL.length} livros`;
+  for(const n of ALL){const item=document.querySelector(`[data-book="${CSS.escape(n)}"]`);if(!item)continue;const b=bookState(n);item.className=`book-item${b.status==="done"?" completed":""}${b.status==="reading"?" reading":""}${state.selected===n?" selected":""}`;item.querySelector(".book-pct").textContent=`${percent(n)}%`;item.querySelector("input").checked=b.status==="done";}
+  for(const cat of document.querySelectorAll("[data-category-count]")){const names=cat.dataset.categoryCount.split("||");cat.textContent=`${names.filter(n=>bookState(n).status==="done").length}/${names.length}`;}
+  updateTimerDisplay();
+}
+function renderBookList(){
+  const root=$("bookList");root.replaceChildren();
+  for(const testament of CATEGORIES){
+    const sec=document.createElement("section");const h=document.createElement("h2");h.className="section-title";h.textContent=testament.name;sec.append(h);
+    for(const cat of testament.categories){
+      const head=document.createElement("h3");head.className="category-title";const label=document.createElement("span");label.textContent=cat.name;const count=document.createElement("span");count.dataset.categoryCount=cat.books.join("||");head.append(label,count);sec.append(head);
+      for(const name of cat.books){
+        const row=document.createElement("div");row.className="book-item";row.dataset.book=name;row.tabIndex=0;row.setAttribute("role","button");row.setAttribute("aria-label",`Abrir ${name}`);
+        const cb=document.createElement("input");cb.type="checkbox";cb.setAttribute("aria-label",`Marcar ${name} como concluído`);
+        cb.addEventListener("click",e=>e.stopPropagation());cb.addEventListener("change",()=>setStatus(name,cb.checked?"done":"not-started"));
+        const nm=document.createElement("span");nm.className="book-name";nm.textContent=name;const pct=document.createElement("span");pct.className="book-pct";
+        row.append(cb,nm,pct);row.addEventListener("click",()=>selectBook(name));row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectBook(name);}});
+        sec.append(row);
+      }
+    }root.append(sec);
+  }renderGlobal();
+}
+function selectBook(name){state.selected=name;save();renderBookList();renderDetail();}
+function renderAll(keepTab=true){renderBookList();if(state.selected)renderDetail();else renderGlobal();}
+function el(tag,cls,text){const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;}
+function button(text,cls,action){const b=el("button",`btn ${cls||""}`,text);b.type="button";b.addEventListener("click",action);return b;}
+function renderDetail(){
+  const root=$("detail");root.replaceChildren();
+  const name=state.selected;if(!name){root.append(el("div","empty-state","Escolha um livro na lista para começar seu estudo."));return;}
+  const info=INFO.get(name),b=bookState(name),hasText=!!state.bible?.[name];
+  const head=el("header","detail-head");head.append(el("h2","",name));head.append(el("p","",`${info.testament} · ${info.category} · ${info.chapters} capítulos${hasText?` · ${state.bible[name].reduce((s,c)=>s+c.length,0)} versículos`:" · contagem padrão de capítulos"}`));root.append(head);
+  const progress=el("section","progress-card");const line=el("div","progress-line");line.append(el("span","",`${countRead(name)} de ${info.chapters} capítulos lidos`),el("strong","",`${percent(name)}%`));const track=el("div","progress-track");track.setAttribute("role","progressbar");track.setAttribute("aria-valuemin","0");track.setAttribute("aria-valuemax","100");track.setAttribute("aria-valuenow",String(percent(name)));const fill=el("span");fill.style.width=`${percent(name)}%`;track.append(fill);progress.append(line,track);root.append(progress);
+  const form=el("section","form-grid");form.setAttribute("aria-label","Dados do livro");
+  const statusField=el("div","field"),statusLabel=el("label","","Status");statusLabel.htmlFor="statusSelect";const status=el("select");status.id="statusSelect";for(const [value,label] of [["not-started","Não iniciado"],["reading","Lendo"],["done","Concluído"]]){const o=el("option","",label);o.value=value;status.append(o);}status.value=b.status;status.addEventListener("change",()=>setStatus(name,status.value));statusField.append(statusLabel,status);form.append(statusField);
+  for(const [labelText,key] of [["Data de início","start"],["Data de conclusão","end"]]){const f=el("div","field"),lab=el("label","",labelText),inp=el("input");inp.type="date";inp.value=b[key]||"";lab.htmlFor=`date-${key}`;inp.id=`date-${key}`;inp.addEventListener("change",()=>{b[key]=inp.value;if(key==="start"&&inp.value&&b.status==="not-started")b.status="reading";if(key==="end"&&inp.value&&b.status!=="done")b.status="done";save();renderBookList();});f.append(lab,inp);form.append(f);}
+  root.append(form);
+  const timer=el("section","timer");timer.setAttribute("aria-label","Cronômetro de estudo");const clock=el("output","clock",formatTime(elapsed(name)));clock.id="clock";const run=state.running?.name===name;const startBtn=button(run?"Pausar":"Iniciar",run?"green":"",()=>{startTimer(name);renderDetail();});const resetBtn=button("Zerar","secondary",()=>{if(confirm(`Zerar o cronômetro de ${name}?`)){bookState(name).seconds=0;if(state.running?.name===name)state.running.last=Date.now();save();updateTimerDisplay();}});const infoText=el("span","timer-info",run?"Contando o tempo deste livro…":state.running?`Cronômetro ativo em ${state.running.name}`:"Tempo dedicado a este livro");infoText.id="timerInfo";timer.append(clock,startBtn,resetBtn,infoText);root.append(timer);
+  const tabs=el("div","tabs");tabs.setAttribute("role","tablist");tabs.setAttribute("aria-label","Ferramentas do livro");
+  const tabDefs=[["chapters","Capítulos"],["read","Leitura"],["search","Pesquisa"],["notes","Anotações"]];
+  for(const [key,label] of tabDefs){const btn=el("button","tab",label);btn.type="button";btn.role="tab";btn.id=`tab-${key}`;btn.setAttribute("aria-selected",String(activeTab===key));btn.addEventListener("click",()=>{activeTab=key;renderDetail();});tabs.append(btn);}root.append(tabs);
+  const content=el("section","tab-content");content.setAttribute("aria-labelledby",`tab-${activeTab}`);content.id="tab-content";root.append(content);
+  if(activeTab==="chapters")renderChapters(content,name,b);
+  if(activeTab==="read")renderReader(content,name,b);
+  if(activeTab==="search")renderSearch(content,name);
+  if(activeTab==="notes")renderNotes(content,name,b);
+}
+function renderChapters(root,name,b){
+  root.append(el("p","hint","Toque em um número para marcar ou desmarcar o capítulo. Ao concluir todos, o livro fica 100% concluído."));
+  const grid=el("div","chapter-grid");for(let i=1;i<=INFO.get(name).chapters;i++){const btn=el("button",`chapter${b.read[i]?" done":""}`,String(i));btn.type="button";btn.setAttribute("aria-pressed",String(!!b.read[i]));btn.title=b.read[i]?`Lido em ${b.read[i]}`:"Não lido";btn.addEventListener("click",()=>toggleChapter(name,i));grid.append(btn);}root.append(grid);
+  const actions=el("div","row");actions.append(button("Marcar todos","secondary",()=>markAll(name)),button("Limpar capítulos","secondary",()=>clearChapters(name)));root.append(actions);
+}
+function renderReader(root,name,b){
+  const chapters=state.bible?.[name];if(!chapters){const box=el("div","import-card");box.append(el("strong","","Importe o texto bíblico para ler aqui"),el("p","","Use “Importar Bíblia (.json)” na navegação. O progresso de capítulos funciona mesmo sem importar o texto."));root.append(box);return;}
+  if(b.currentChapter>chapters.length)b.currentChapter=1;
+  const tools=el("div","row");const colors=["#ffe066","#ffb3c1","#b8f0c0","#a9d6ff","#ffc78a"];
+  for(const color of colors){const sw=el("button",`swatch${state.tool==="color"&&state.color===color?" active":""}`);sw.type="button";sw.style.background=color;sw.title=`Marca-texto ${color}`;sw.setAttribute("aria-label",`Selecionar cor ${color}`);sw.addEventListener("click",()=>{state.color=color;state.tool="color";save();renderDetail();});tools.append(sw);}
+  const colorInput=el("input","color-input");colorInput.type="color";colorInput.value=state.color;colorInput.title="Escolher cor";colorInput.setAttribute("aria-label","Escolher cor do marca-texto");colorInput.addEventListener("input",()=>{state.color=colorInput.value;state.tool="color";save();});colorInput.addEventListener("change",()=>renderDetail());tools.append(colorInput);
+  tools.append(button(state.tool==="erase"?"Borracha ativa":"Borracha","secondary",()=>{state.tool=state.tool==="erase"?"color":"erase";renderDetail();}));root.append(tools);
+  root.append(el("p","hint","Selecione um trecho dentro de um versículo para aplicar a cor. A borracha remove a marcação do trecho selecionado."));
+  const nav=el("div","row");const prev=button("‹ Anterior","secondary",()=>goChapter(name,b.currentChapter-1));const select=el("select");select.setAttribute("aria-label","Selecionar capítulo");for(let i=1;i<=chapters.length;i++){const o=el("option","",`Capítulo ${i}`);o.value=i;select.append(o);}select.value=b.currentChapter;select.addEventListener("change",()=>goChapter(name,+select.value));const next=button("Próximo ›","secondary",()=>goChapter(name,b.currentChapter+1));nav.append(prev,select,next);root.append(nav);
+  const reader=el("article","reader");reader.id="reader";chapters[b.currentChapter-1].forEach((text,i)=>{const p=el("p","verse");p.id=`verse-${b.currentChapter}-${i+1}`;p.append(el("sup","",String(i+1)));const span=el("span","verse-text");span.dataset.verse=String(i+1);paintVerse(span,name,b.currentChapter,i+1);p.append(span);reader.append(p);});root.append(reader);
+  reader.addEventListener("mouseup",()=>applySelection(reader,name,b.currentChapter));reader.addEventListener("touchend",()=>setTimeout(()=>applySelection(reader,name,b.currentChapter),60));
+  const mark=button(b.read[b.currentChapter]?"✓ Capítulo lido (desmarcar)":"Marcar capítulo como lido","secondary",()=>toggleChapter(name,b.currentChapter));mark.style.marginTop=".8rem";root.append(mark);
+}
+function goChapter(name,chapter){const b=bookState(name),len=state.bible?.[name]?.length||1;b.currentChapter=Math.max(1,Math.min(len,chapter));save();renderDetail();}
+function paintVerse(span,name,chapter,verse){
+  const text=state.bible[name][chapter-1][verse-1]||"",runs=bookState(name).highlights[`${chapter}:${verse}`]||[];span.replaceChildren();let pos=0;
+  for(const run of runs){if(run[0]>pos)span.append(document.createTextNode(text.slice(pos,run[0])));const mark=el("span","highlight",text.slice(run[0],run[1]));mark.style.backgroundColor=run[2];span.append(mark);pos=run[1];}if(pos<text.length)span.append(document.createTextNode(text.slice(pos)));
+}
+function applySelection(reader,name,chapter){
+  const sel=window.getSelection();if(!sel||!sel.rangeCount||sel.isCollapsed)return;const range=sel.getRangeAt(0),start=range.startContainer,end=range.endContainer;const startVerse=start.nodeType===1?start.closest?.(".verse-text"):start.parentElement?.closest(".verse-text");const endVerse=end.nodeType===1?end.closest?.(".verse-text"):end.parentElement?.closest(".verse-text");if(!startVerse||startVerse!==endVerse||!reader.contains(startVerse)){sel.removeAllRanges();return;}
+  const text=state.bible[name][chapter-1][+startVerse.dataset.verse-1]||"";const r1=document.createRange();r1.selectNodeContents(startVerse);r1.setEnd(start,range.startOffset);const r2=document.createRange();r2.selectNodeContents(startVerse);r2.setEnd(end,range.endOffset);const s=r1.toString().length,e=r2.toString().length;if(e<=s){sel.removeAllRanges();return;}
+  const key=`${chapter}:${startVerse.dataset.verse}`;let arr=Array(text.length).fill(null);for(const r of bookState(name).highlights[key]||[])for(let i=r[0];i<r[1]&&i<text.length;i++)arr[i]=r[2];for(let i=s;i<e&&i<text.length;i++)arr[i]=state.tool==="erase"?null:state.color;
+  const runs=[];for(let i=0;i<arr.length;){if(!arr[i]){i++;continue;}let j=i+1;while(j<arr.length&&arr[j]===arr[i])j++;runs.push([i,j,arr[i]]);i=j;}if(runs.length)bookState(name).highlights[key]=runs;else delete bookState(name).highlights[key];save();paintVerse(startVerse,name,chapter,+startVerse.dataset.verse);sel.removeAllRanges();
+}
+function foldMap(obj){const out=new Map();for(const [key,value] of Object.entries(obj||{}))out.set(norm(key),value);return out;}
+function renderSearch(root,name){
+  if(!state.bible?.[name]){root.append(el("p","hint","Importe o texto bíblico para pesquisar palavras neste livro."));return;}
+  const row=el("form","search-row");row.role="search";const input=el("input","search-input");input.type="search";input.placeholder=`Palavra ou expressão em ${name}`;input.value=searchQuery;input.setAttribute("aria-label","Pesquisar no livro");const submit=button("Buscar","",()=>{});submit.type="submit";row.append(input,submit);root.append(row);const out=el("div");out.id="searchResults";root.append(out);
+  function runSearch(event){event?.preventDefault();searchQuery=input.value.trim();out.replaceChildren();if(!searchQuery)return;const q=norm(searchQuery);const hits=[];const chapters=state.bible[name];chapters.forEach((verses,ci)=>verses.forEach((text,vi)=>{const nt=norm(text);let from=0,idx;while((idx=nt.indexOf(q,from))!==-1){hits.push({chapter:ci+1,verse:vi+1,text,index:idx});from=idx+Math.max(1,q.length);if(hits.length>5000)break;}}));
+  out.append(el("p","hint",`${hits.length} ocorrência(s) encontrada(s)${hits.length>200?" — mostrando as primeiras 200":""}.`));hits.slice(0,200).forEach(hit=>{const result=el("div","result");result.tabIndex=0;result.setAttribute("role","button");result.append(el("strong","",`${name} ${hit.chapter}:${hit.verse}`),document.createTextNode(hit.text));const open=()=>{bookState(name).currentChapter=hit.chapter;activeTab="read";renderDetail();requestAnimationFrame(()=>{const p=$(`verse-${hit.chapter}-${hit.verse}`);if(p){p.classList.add("flash");p.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>p.classList.remove("flash"),2200);}});};result.addEventListener("click",open);result.addEventListener("keydown",e=>{if(e.key==="Enter")open();});out.append(result);});}
+  row.addEventListener("submit",runSearch);if(searchQuery)runSearch();
+}
+function renderNotes(root,name,b){const label=el("label","","Anotações, insights e comentários");label.htmlFor="bookNotes";const ta=el("textarea","notes");ta.id="bookNotes";ta.value=b.notes||"";ta.placeholder="Escreva aqui o que você aprendeu neste livro…";ta.addEventListener("input",()=>{b.notes=ta.value;save();});root.append(label,ta);const notice=el("p","status-note","As anotações são salvas automaticamente neste navegador.");root.append(notice);}
+function updateTimerDisplay(){const clock=$("clock");if(clock&&state.selected)clock.textContent=formatTime(elapsed(state.selected));const info=$("timerInfo");if(info){info.textContent=state.running?.name===state.selected?"Contando o tempo deste livro…":state.running?`Cronômetro ativo em ${state.running.name}`:"Tempo dedicado a este livro";}}
+function normalizeVerse(value){if(typeof value==="string"||typeof value==="number")return String(value);if(value&&typeof value==="object")return String(value.text??value.verse??value.content??value.value??"");return "";}
+function chaptersFromBook(book){
+  if(Array.isArray(book))return book;
+  if(!book||typeof book!=="object")return null;
+  return book.chapters??book.chapter??book.verses??null;
+}
+function normalizeChapters(raw){
+  if(!Array.isArray(raw))return null;
+  // Aceita capítulos como arrays de versículos, objetos com "verses" ou objetos indexados.
+  const chapters=raw.map(ch=>{
+    let verses=Array.isArray(ch)?ch:(ch&&typeof ch==="object"?(ch.verses??ch.versesList??ch.content):null);
+    if(!Array.isArray(verses)&&verses&&typeof verses==="object")verses=Object.values(verses);
+    if(!Array.isArray(verses))return null;
+    return verses.map(normalizeVerse);
+  });
+  return chapters.every(c=>Array.isArray(c)&&c.length>0&&c.every(v=>v.length>0))?chapters:null;
+}
+function extractBooks(json){
+  if(Array.isArray(json))return json.map((b,i)=>({name:b?.name??b?.abbrev??b?.abbreviation??b?.book??ALL[i],data:b}));
+  if(!json||typeof json!=="object")return null;
+  const root=json.books??json.Book??json.bible??json.data??json;
+  if(Array.isArray(root))return root.map((b,i)=>({name:b?.name??b?.name_pt??b?.abbrev??b?.abbreviation??b?.book??ALL[i],data:b}));
+  if(root&&typeof root==="object")return Object.entries(root).map(([name,data])=>({name,data}));
+  return null;
+}
+function parseBible(json){
+  const entries=extractBooks(json);if(!entries||!entries.length)return {error:"Não encontrei uma lista de livros no JSON."};
+  const out={};const missing=[];
+  for(const entry of entries){
+    const nameNorm=norm(entry.name);let canonical=ALL.find(n=>norm(n)===nameNorm);
+    if(!canonical&&entry.data&&typeof entry.data==="object"){
+      const alias=entry.data.name??entry.data.name_pt??entry.data.abbrev??entry.data.abbreviation??entry.data.book;
+      canonical=ALL.find(n=>norm(n)===norm(alias));
+    }
+    // Quando o arquivo não nomeia os livros, usa a ordem bíblica canônica.
+    if(!canonical&&entries.every(e=>!e.name||ALL.some(n=>norm(n)===norm(e.name))))canonical=ALL[entries.indexOf(entry)];
+    if(!canonical)continue;
+    const raw=chaptersFromBook(entry.data);const chapters=normalizeChapters(raw);
+    if(chapters)out[canonical]=chapters;
+  }
+  // Se a importação é posicional (nomes ausentes ou genéricos), tenta mapear pela ordem dos 66 livros.
+  if(Object.keys(out).length===0&&entries.length===66){
+    entries.forEach((entry,i)=>{const chapters=normalizeChapters(chaptersFromBook(entry.data));if(chapters)out[ALL[i]]=chapters;});
+  }
+  if(!Object.keys(out).length)return {error:"O JSON foi aberto, mas não reconheci a estrutura dos capítulos e versículos. Veja se cada livro contém capítulos e cada capítulo contém versículos."};
+  const mismatches=[];
+  for(const name of Object.keys(out)){const expected=INFO.get(name).chapters,got=out[name].length;if(expected!==got)mismatches.push(`${name}: esperado ${expected}, encontrado ${got}`);}
+  return {bible:out,warnings:mismatches};
+}
+function openDb(){return new Promise((resolve,reject)=>{if(!("indexedDB"in window)){reject(new Error("IndexedDB indisponível"));return;}const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains("data"))req.result.createObjectStore("data");};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+async function dbPut(key,value){const db=await openDb();await new Promise((resolve,reject)=>{const tx=db.transaction("data","readwrite");tx.objectStore("data").put(value,key);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});db.close();}
+async function dbGet(key){try{const db=await openDb();const value=await new Promise((resolve,reject)=>{const req=db.transaction("data").objectStore("data").get(key);req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});db.close();return value;}catch{return null;}}
+function paintImportStatus(){const has=!!state.bible;$("importStatus").textContent=has?`Texto carregado: ${state.bibleName||"Bíblia importada"} · ${Object.keys(state.bible).length} livros reconhecidos.`:"Nenhum texto importado. O rastreador funciona sem ele, mas a leitura e a pesquisa precisam do JSON.";$("clearBibleBtn").hidden=!has;}
+async function importBibleFile(file){
+  try{const text=await file.text();const json=JSON.parse(text.replace(/^\uFEFF/,""));const parsed=parseBible(json);if(parsed.error)throw new Error(parsed.error);
+    state.bible=parsed.bible;state.bibleName=file.name.replace(/\.json$/i,"");await dbPut("bible",{bible:state.bible,name:state.bibleName});paintImportStatus();
+    let msg=`Importação concluída: ${Object.keys(state.bible).length} livros reconhecidos.`;if(parsed.warnings.length)msg+=` Atenção: contagem de capítulos diferente em ${parsed.warnings.slice(0,5).join("; ")}${parsed.warnings.length>5?"…":""}.`;alert(msg);if(state.selected)renderDetail();
+  }catch(err){alert(`Não consegui importar esse JSON.\n\n${err.message}\n\nO arquivo precisa conter livros, capítulos e versículos. Se continuar falhando, envie o arquivo JSON para eu adaptar o importador ao formato exato.`);}
+}
+function exportBackup(){
+  const data={format:"rastreador-biblico-backup-v2",exportedAt:new Date().toISOString(),progress:{books:state.books,selected:state.selected,color:state.color},bible:state.bible,bibleName:state.bibleName};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="backup-rastreador-biblico.json";a.click();URL.revokeObjectURL(url);
+}
+async function importBackup(file){
+  try{const data=JSON.parse((await file.text()).replace(/^\uFEFF/,""));const p=data.progress??data;if(!p.books||typeof p.books!=="object")throw new Error("Esse arquivo não parece ser um backup deste rastreador.");
+    if(!confirm("Importar este backup vai substituir o progresso atual neste navegador. Deseja continuar?"))return;
+    state.books=p.books;state.selected=p.selected&&INFO.has(p.selected)?p.selected:null;state.color=p.color||"#ffe066";state.running=null;
+    if(data.bible&&typeof data.bible==="object"){state.bible=data.bible;state.bibleName=data.bibleName||"";await dbPut("bible",{bible:state.bible,name:state.bibleName});}
+    save();paintImportStatus();renderBookList();renderDetail();
+  }catch(err){alert(`Não foi possível importar o backup: ${err.message}`);}
+}
+function loadProgress(){
+  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const data=JSON.parse(raw);if(data.books)state.books=data.books;state.selected=INFO.has(data.selected)?data.selected:null;state.color=data.color||"#ffe066";}}
+  catch{alert("Não foi possível ler o progresso salvo. Você pode importar um backup, se tiver.");}
+  // Migra dados do nome usado na versão anterior, quando possível.
+  try{const old=localStorage.getItem("rastreador-biblico-v1");if(old&&!localStorage.getItem(STORAGE_KEY)){const d=JSON.parse(old);if(d.books){state.books=d.books;for(const b of Object.values(state.books)){if(b.status==="ok")b.status="done";else if(b.status==="lendo")b.status="reading";else b.status="not-started";b.highlights||=b.hl||{};b.currentChapter||=b.cur||1;}state.selected=INFO.has(d.sel)?d.sel:null;state.color=d.color||"#ffe066";save();}}}catch{}
+}
+$("bibleImportBtn").addEventListener("click",()=>$("bibleFile").click());
+$("bibleFile").addEventListener("change",async e=>{const file=e.target.files?.[0];if(file)await importBibleFile(file);e.target.value="";});
+$("clearBibleBtn").addEventListener("click",async()=>{if(!confirm("Remover o texto bíblico importado? O progresso e as anotações serão mantidos."))return;state.bible=null;state.bibleName="";try{const db=await openDb();await new Promise(resolve=>{const tx=db.transaction("data","readwrite");tx.objectStore("data").delete("bible");tx.oncomplete=resolve;});db.close();}catch{}paintImportStatus();if(state.selected)renderDetail();});
+$("exportBtn").addEventListener("click",exportBackup);
+$("backupImportBtn").addEventListener("click",()=>$("backupFile").click());
+$("backupFile").addEventListener("change",async e=>{const file=e.target.files?.[0];if(file)await importBackup(file);e.target.value="";});
+$("toggleBooks").addEventListener("click",()=>{const nav=$("bookNav"),collapsed=nav.classList.toggle("collapsed");$("toggleBooks").setAttribute("aria-expanded",String(!collapsed));$("toggleBooks").lastElementChild.textContent=collapsed?"⌃":"⌄";});
+loadProgress();renderBookList();paintImportStatus();renderDetail();
+dbGet("bible").then(data=>{if(data?.bible){state.bible=data.bible;state.bibleName=data.name||"";paintImportStatus();if(state.selected)renderDetail();}});
+timerInterval=setInterval(()=>{if(state.running){updateTimerDisplay();if(Math.floor(Date.now()/1000)%10===0)save();}},1000);
+window.addEventListener("pagehide",()=>{if(state.running){const b=bookState(state.running.name);b.seconds+=Math.max(0,(Date.now()-state.running.last)/1000);state.running=null;save();}});
+})();
+</script>
+</body>
+</html>
