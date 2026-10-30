@@ -415,7 +415,7 @@ function inicializarControlesSupabase() {
     bookNav.appendChild(logoutContainer);
   }
 
-  supabaseClient.auth.onAuthStateChange((event, session) => {
+ supabaseClient.auth.onAuthStateChange((event, session) => {
     if (session) {
       sessionUser = session.user;
       $("auth-overlay").style.display = "none";
@@ -423,7 +423,7 @@ function inicializarControlesSupabase() {
       baixarDadosSincronizadosNuvem();
     } else {
       sessionUser = null;
-      $("auth-overlay").style.display = "flex";
+      $("auth-overlay").style.removeProperty("display");
     }
   });
 
