@@ -217,6 +217,41 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
 </head>
 <body>
+  ...
+</style>
+</head>
+<body>
+<div id="auth-overlay">
+  <div class="auth-card">
+    <div style="font-size: 2.2rem; margin-bottom: 0.3rem; opacity: 0.65;">🦋</div>
+    <h2>Meu Espaço Bíblico</h2>
+    <p style="color: #967b8d; font-style: italic; font-size: 0.9rem; margin: 0 0 1.8rem 0;">Acessar meu diário pessoal</p>
+    
+    <form id="supabase-auth-form">
+      <div class="auth-input-group">
+        <label for="sup-email">E-mail Cadastrado</label>
+        <input type="email" id="sup-email" required placeholder="seu@email.com" style="width: 100%; background: rgba(255,253,251,0.9); border: 1px solid #e5cbd8; border-radius: 11px; padding: 0.65rem 0.8rem; color: var(--ink);">
+      </div>
+      
+      <div class="auth-input-group" style="margin-top: 1.2rem;">
+        <label for="sup-password">Senha de Acesso</label>
+        <div style="position: relative; display: flex; align-items: center; width: 100%;">
+          <input type="password" id="sup-password" required style="width: 100% !important; background: rgba(255,253,251,0.9); border: 1px solid #e5cbd8; border-radius: 11px; padding: 0.65rem 2.8rem 0.65rem 0.8rem; color: var(--ink); box-sizing: border-box !important;">
+          <button type="button" id="sup-toggle-pass" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--muted); padding: 0; z-index: 10; line-height: 1;">👁️</button>
+        </div>
+      </div>
+      
+      <div style="text-align: right; margin: 0.5rem 0 1.5rem 0;">
+        <button type="button" id="sup-recover" style="background: none; border: none; color: var(--muted); font-size: 0.85rem; font-style: italic; text-decoration: underline; cursor: pointer; padding: 0;">Esqueci minha senha</button>
+      </div>
+      
+      <button type="submit" class="btn" style="width: 100%; padding: 0.7rem; font-size: 1rem;">Abrir Diário</button>
+    </form>
+    
+    <div id="sup-msg" style="margin-top: 1.2rem; font-size: 0.88rem; font-style: italic; min-height: 1.2em;"></div>
+  </div>
+</div>
+
   <a class="skip" href="#main">Pular para o conteúdo</a>
 
   <header class="site-header">
