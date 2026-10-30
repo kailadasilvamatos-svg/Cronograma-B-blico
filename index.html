@@ -402,8 +402,8 @@ let supabaseClient = null;
 let sessionUser = null;
 
 function inicializarControlesSupabase() {
-  const URL_BANCO = window.env?.NEXT_PUBLIC_ARMAZENARDADOSCRONOGRAMA_SUPABASE_URL || "https://supabase.co";
-  const CHAVE_BANCO = window.env?.NEXT_PUBLIC_ARMAZENARDADOSCRONOGRAMA_SUPABASE_PUBLISHABLE_KEY || "sua-chave";
+  const URL_BANCO = "https://bbzlaslymbbrejunjaho.supabase.co";
+  const CHAVE_BANCO = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJiemxhc2x5bWJicmVqdW5qYWhvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMjMxOTUsImV4cCI6MjEwODg5OTE5NX0.Od4aPrYMDTdNXZtDQ3JwKUOPxqYsT2AeZ89a7TTYuR8";
   if (!window.supabase) return;
 
   supabaseClient = window.supabase.createClient(URL_BANCO, CHAVE_BANCO);
