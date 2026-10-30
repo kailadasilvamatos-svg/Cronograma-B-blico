@@ -217,21 +217,45 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
   <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
 </head>
 <body>
-  ...
-</style>
-</head>
-<body>
-<div id="auth-overlay">
-  <div class="auth-card">
+<!-- LINHA 220: COMEÇA O CÓDIGO NOVO AQUI -->
+<div id="auth-overlay" style="display: flex; position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(255,250,245,0.99), rgba(248,237,240,1)); align-items: center; justify-content: center; z-index: 9999999 !important; pointer-events: auto !important; padding: 1rem;">
+  <div class="auth-card" style="position: relative; z-index: 99999999 !important; pointer-events: auto !important;">
     <div style="font-size: 2.2rem; margin-bottom: 0.3rem; opacity: 0.65;">🦋</div>
     <h2>Meu Espaço Bíblico</h2>
     <p style="color: #967b8d; font-style: italic; font-size: 0.9rem; margin: 0 0 1.8rem 0;">Acessar meu diário pessoal</p>
     
-    <form id="supabase-auth-form">
-      <div class="auth-input-group">
-        <label for="sup-email">E-mail Cadastrado</label>
-        <input type="email" id="sup-email" required placeholder="seu@email.com" style="width: 100%; background: rgba(255,253,251,0.9); border: 1px solid #e5cbd8; border-radius: 11px; padding: 0.65rem 0.8rem; color: var(--ink);">
+    <form id="supabase-auth-form" style="pointer-events: auto !important;">
+      <!-- Campo de E-mail -->
+      <div class="auth-input-group" style="margin-bottom: 1.2rem; text-align: left;">
+        <label for="sup-email" style="display: block; color: var(--muted); font-size: 0.88rem; font-style: italic; margin-bottom: 0.3rem;">E-mail Cadastrado</label>
+        <input type="email" id="sup-email" required placeholder="seu@email.com" style="width: 100% !important; background: #ffffff !important; border: 1px solid #e5cbd8 !important; border-radius: 11px; padding: 0.65rem 0.8rem; color: #3f3045 !important; position: relative; z-index: 999999999 !important; pointer-events: auto !important; -webkit-user-select: text !important; user-select: text !important;">
       </div>
+      
+      <!-- Campo de Senha -->
+      <div class="auth-input-group" style="margin-bottom: 1.2rem; text-align: left;">
+        <label for="sup-password" style="display: block; color: var(--muted); font-size: 0.88rem; font-style: italic; margin-bottom: 0.3rem;">Senha de Acesso</label>
+        <div style="position: relative; display: flex; align-items: center; width: 100%;">
+          <input type="password" id="sup-password" required style="width: 100% !important; background: #ffffff !important; border: 1px solid #e5cbd8 !important; border-radius: 11px; padding: 0.65rem 2.8rem 0.65rem 0.8rem; color: #3f3045 !important; position: relative; z-index: 999999999 !important; pointer-events: auto !important; -webkit-user-select: text !important; user-select: text !important; box-sizing: border-box !important;">
+          <button type="button" id="sup-toggle-pass" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--muted); padding: 0; z-index: 9999999999 !important; line-height: 1;">👁️</button>
+        </div>
+      </div>
+      
+      <!-- Esqueci minha senha -->
+      <div style="text-align: right; margin: 0.5rem 0 1.5rem 0;">
+        <button type="button" id="sup-recover" style="background: none; border: none; color: var(--muted); font-size: 0.85rem; font-style: italic; text-decoration: underline; cursor: pointer; padding: 0; position: relative; z-index: 999999999 !important;">Esqueci minha senha</button>
+      </div>
+      
+      <!-- Botão para Entrar -->
+      <button type="submit" class="btn" style="width: 100%; padding: 0.7rem; font-size: 1rem; position: relative; z-index: 999999999 !important;">Abrir Diário</button>
+    </form>
+    
+    <div id="sup-msg" style="margin-top: 1.2rem; font-size: 0.88rem; font-style: italic; min-height: 1.2em;"></div>
+  </div>
+</div>
+<!-- FIM DO CÓDIGO DA TELA DE LOGIN -->
+
+  <!-- LINHA DO SEU SITE ORIGINAL LOGO ABAIXO -->
+  <a class="skip" href="#main">Pular para o conteúdo</a>
       
       <div class="auth-input-group" style="margin-top: 1.2rem;">
         <label for="sup-password">Senha de Acesso</label>
