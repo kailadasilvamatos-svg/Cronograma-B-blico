@@ -550,22 +550,15 @@ function save() {
 function setNotice(message) { const el = $("saveNotice"); if (el) el.textContent = message; }
 
 function syncStatus(name) {
-  const b = bookState(name), read = countRead(name), total = INFO.get(name).chapters;
-  if (read >= total) {
+  const b = bookState(name), read = countRead(name);
+  const total = INFO.get(name)?.chapters || 0; // <-- LINHA CORRIGIDA AQUI
+  if (read >= total && total > 0) { // <-- ADICIONADO TRAVA PARA NÃO ZERAR SE ESTIVER VAZIO
     b.status = "done";
     if (!b.end) b.end = today();
     if (!b.start) b.start = today();
     if (state.running?.name === name) pauseTimer();
   } else if (read > 0) {
     if (b.status === "done") b.end = "";
-    b.status = "reading";
-    if (!b.start) b.start = today();
-  } else {
-    if (b.status === "done" || b.status === "reading") b.end = "";
-    b.status = (b.seconds > 0 || b.start) ? "reading" : "not-started";
-    if (b.status === "not-started") b.start = "";
-  }
-}
 
 function setStatus(name, status) {
   const b = bookState(name);
